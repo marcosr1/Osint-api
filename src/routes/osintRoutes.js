@@ -1,5 +1,5 @@
 import express from "express";
-import { lookUpDNS, getHeaders, getStatus, getGeoIp, getWhois, getWhoisJson } from "../services/osintService.js";
+import { lookUpDNS, getHeaders, getStatus, getGeoIp, getWhois, getIp } from "../services/osintService.js";
 
 const router = express.Router();
 
@@ -33,10 +33,10 @@ router.get("/whois", async (req, res) => {
   res.json(data);
 });
 
-router.get("/whoisJson", async (req, res) => {
-  const { domain } = req.query;
-  const data = await getWhoisJson(domain);
-  res.json(data);
+router.get("/getip", async (req, res) => {
+    const {domain} = req.query;
+    const data = await getIp(domain);
+    res.json(data);
 });
 
 export default router;

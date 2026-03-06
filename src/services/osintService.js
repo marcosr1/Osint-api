@@ -1,7 +1,6 @@
 import dns from "dns/promises";
 import axios from "axios";
-import * as whois from "whois";
-import whois2 from "whois-json";
+import * as whois from "whois"; 
 
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
@@ -32,6 +31,19 @@ export const getStatus = async (url) => {
   }
 };
 
+export const getIp = async (domain) => {
+    try { 
+        const result = await dns.lookup(domain);
+        return {
+            domain,
+            ip: result.address,
+            family: result.family
+        };
+    } catch (err) {
+        return { error: err.message };
+    }
+}
+
 export const getGeoIp = async (ip) => {
   try {
     const response = await axios.get(`http://ip-api.com/json/${ip}`);
@@ -44,20 +56,23 @@ export const getGeoIp = async (ip) => {
 export const getWhois = (domain) => {
   return new Promise((resolve, reject) => {
     whois.lookup(domain, (err, data) => {
+
+        const result = {};
+
+        data.split("\n").forEach(line => {
+            const parts = line.split(":");
+            if (parts.length >= 2) {
+            const key = parts[0].trim();
+            const value = parts.slice(1).join(":").trim();
+            result[key] = value;
+            }
+        });
       if (err) {
         reject(err);
       } else {
-        resolve({ domain, raw: data });
+        resolve({ domain, raw: result });
       }
     });
   });
 };
-
-export const getWhoisJson = async (domain) => {
-    try {
-        const data = await whois2(domain);
-        return ({domain, raw: data});
-    } catch ( error ) {
-        return {domain, error: error.message};
-    }
-};
+ 
