@@ -16,7 +16,7 @@ Este projeto foi desenvolvido em **Node.js** e permite realizar consultas como:
 * Express
 * Axios
 * DNS (Node)
-* whois-json
+* whois
 
 ## 📦 Instalação
 
@@ -60,7 +60,7 @@ http://localhost:3000
 Obtém os IPs de um domínio.
 
 ```
-GET /api/dns?domain=google.com
+GET /dns?domain=google.com
 ```
 
 Exemplo de resposta:
@@ -81,7 +81,7 @@ Exemplo de resposta:
 Obtém os headers de um site.
 
 ```
-GET /api/headers?url=https://google.com
+GET /headers?url=https://google.com
 ```
 
 Resposta:
@@ -100,7 +100,7 @@ Resposta:
 Verifica se um site está online.
 
 ```
-GET /api/status?url=https://google.com
+GET /status?url=https://google.com
 ```
 
 Resposta:
@@ -118,7 +118,7 @@ Resposta:
 Obtém informações geográficas de um IP.
 
 ```
-GET /api/geoip?ip=8.8.8.8
+GET /geoip?ip=8.8.8.8
 ```
 
 Resposta:
@@ -132,13 +132,32 @@ Resposta:
 ```
 
 ---
+## GetIP
+
+Obtém informações do IP a partir do dominio.
+
+```
+GET /getip?domain=google.com
+```
+
+Resposta:
+
+```json
+{
+    "domain": "google.com",
+    "ip": "if",
+    "family": 
+}
+```
+
+---
 
 ## WHOIS
 
 Obtém informações de registro de um domínio.
 
 ```bash
-GET /api/whois?domain=google.com
+GET /whois?domain=google.com
 ```
 
 Resposta:
@@ -159,11 +178,10 @@ Resposta:
 src/
  ├── routes/
  │    └── osintRoutes.js
- │
  ├── services/
  │    └── osintService.js
- │
- ├── server.js
+ ├── app.js
+ │ server.js
 ```
 
 ---
