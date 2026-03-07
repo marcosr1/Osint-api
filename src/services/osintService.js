@@ -1,6 +1,7 @@
 import dns from "dns/promises";
 import axios from "axios";
 import * as whois from "whois"; 
+import { sites } from "../utils/sites.js"
 
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
@@ -76,3 +77,38 @@ export const getWhois = (domain) => {
   });
 };
  
+
+export const searchUserName = async (username) => {
+  const result = []
+  for (const site of sites ) {
+    const url = site.url.replace("{}", username)
+
+    try {
+      const response = await axios.get(url, {
+        validateStatus: () => true
+      })
+
+      if (response.status === 200) {
+        result.push({
+          site: site.name,
+          url: url,
+          found: true
+        })
+      } else {
+        result.push({
+          site: site.name,
+          url: url,
+          found: false
+        })
+      }
+    } catch (error) {
+        result.push({
+          site: site.name,
+          url: url,
+          found: false
+        })
+    }
+  }
+
+  return result
+}
