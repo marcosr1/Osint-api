@@ -171,6 +171,63 @@ Resposta:
 ```
 
 ---
+## UserName
+
+Busca em sites famosos pelo username, contém falhas por conta que alguns sites retornam OK.
+
+```bash
+GET /username?username=tal
+```
+
+Resposta:
+
+```json
+{
+  "username": "username",
+  "results": [
+    {
+      "site": "site",
+      "url": "https://site.com/username",
+      "found": true
+    }
+  ]
+}
+```
+
+---
+## UserName
+
+Busca o endereço pela latitude e longetude adiquirida.
+
+```bash
+GET /address?lat=12345&lon=12345
+```
+
+Resposta:
+
+```json
+{
+  "address": {
+    "lat": "12345",
+    "lon": "12345",
+    "address": "address",
+    "components": {
+      "house_number": "",
+      "road": "",
+      "town": "",
+      "county": "",
+      "state": "",
+      "ISO3166-2-lvl4": "",
+      "postcode": "",
+      "country": "",
+      "country_code": ""
+    }
+  }
+}
+```
+
+---
+
 
 # 📂 Estrutura do projeto
 
@@ -180,6 +237,8 @@ src/
  │    └── osintRoutes.js
  ├── services/
  │    └── osintService.js
+ ├── utils/
+ │    └── sites.js
  ├── app.js
  │ server.js
 ```
@@ -194,21 +253,5 @@ Esta API utiliza **informações públicas** e deve ser usada apenas para:
 * aprendizado
 * segurança
 * OSINT
-
-Não utilize para atividades ilegais.
-
+ 
 ---
-
-# 🧠 Melhorias futuras
-
-* Scan completo de domínio
-* Descoberta de subdomínios
-* Verificação SSL
-* Identificação de tecnologias
-* Integração com APIs externas
-
----
-
-# 📜 Licença
-
-MIT License

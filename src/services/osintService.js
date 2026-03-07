@@ -35,10 +35,18 @@ export const getStatus = async (url) => {
 export const getIp = async (domain) => {
     try { 
         const result = await dns.lookup(domain);
+
+        let geoIp = null;
+
+        if (result.address != null) {
+            geoIp = await getGeoIp(result.address);
+        }
+
         return {
             domain,
             ip: result.address,
-            family: result.family
+            family: result.family,
+            geoIp
         };
     } catch (err) {
         return { error: err.message };
@@ -50,7 +58,7 @@ export const getGeoIp = async (ip) => {
     const response = await axios.get(`http://ip-api.com/json/${ip}`);
     return response.data;
   } catch (error) {
-    return { error: "GeoIP kkkkk" };
+    return { error: "GeoIP??? kkkkk" };
   }
 };
 
@@ -111,4 +119,17 @@ export const searchUserName = async (username) => {
   }
 
   return result
+}
+
+export const getAddressFromCords = async (lat, lon) => {
+  try {
+    const response = await axios.get("https://nominatim.openstreetmap.org/reverse", {
+      params: { lat, lon, format: "json" },
+      headers: { "User-Agent": "MeuAppOSINT/1.0 (contato@seudominio.com)" }
+    });
+
+    return { lat, lon, address: response.data.display_name, components: response.data.address };
+  } catch (error) {
+    return { error: error.message }
+  }
 }
