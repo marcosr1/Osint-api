@@ -1,5 +1,5 @@
 import express from "express";
-import { lookUpDNS, getHeaders, getStatus, getGeoIp, getWhois, getIp, searchUserName, getAddressFromCords } from "../services/osintService.js";
+import { lookUpDNS, getHeaders, getStatus, getGeoIp, getWhois, getIp, searchUserName, getAddressFromCords, getSubDominios } from "../services/osintService.js";
 
 const router = express.Router();
 
@@ -52,6 +52,12 @@ router.get("/address", async (req, res) => {
   const { lat, lon } = req.query;
   const address = await getAddressFromCords(lat, lon);
   res.json({address})
+})
+
+router.get("/subdominios", async (req, res) => {
+  const { domain } = req.query;
+  const response = await getSubDominios(domain);
+  res.json({domain, total: response.length, subdominios: response})
 })
 
 export default router;

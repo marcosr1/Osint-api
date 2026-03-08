@@ -228,6 +228,26 @@ Resposta:
 
 ---
 
+## Subdominio
+
+Busca busca subdominios pelo principal.
+
+```bash
+GET /subdominio?domain=exemplo.com
+```
+
+Resposta:
+
+```json
+{
+  "domain": "",
+  "total": "length",
+  "subdominios": {
+  } 
+}
+```
+
+---
 
 # 📂 Estrutura do projeto
 

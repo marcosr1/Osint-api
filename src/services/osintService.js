@@ -133,3 +133,35 @@ export const getAddressFromCords = async (lat, lon) => {
     return { error: error.message }
   }
 }
+
+export const getSubDominios = async (domain) => {
+  try {
+    const url = `https://crt.sh/?q=%25.${domain}&output=json`;
+
+    const response = await axios.get(url, {
+      headers: {
+        "User-Agent": "Mozilla/5.0"
+      }
+    });
+    const subdominios = [];
+
+    for (const cert of response.data) {
+      const names = cert.name_value.split("\n");
+
+      for ( const name of names ) {
+
+        if (name.includes(domain)) {
+          try {
+            const resultIp = await dns.lookup(name);
+            subdominios.push({ subdominios: name.trim(), ip: resultIp.address }); 
+          } catch (error) {
+            subdominios.push({ subdominios: name.trim(), ip: null });
+          }
+        };
+      };
+    };
+    return [...subdominios];
+  } catch (error) {
+    return { error: error.message }
+  };
+};
